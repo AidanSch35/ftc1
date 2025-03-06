@@ -30,7 +30,7 @@ public class TestAuto extends LinearOpMode {
         rightVSlideDrive = hardwareMap.get(DcMotor.class, "rightVSlideDrive");
         leftVSlideDrive = hardwareMap.get(DcMotor.class, "leftVSlideDrive");
 
-        ac = new AutoControl(DcMotor leftFrontDrive, DcMotor leftBackDrive, DcMotor rightFrontDrive, DcMotor rightBackDrive, Servo rightHSlideServo, Servo leftHslideServo, DcMotor rightVSlideDrive, DcMotor leftVSlideDrive );
+        ac = new AutoControl(leftFrontDrive,  leftBackDrive,  rightFrontDrive, rightBackDrive,  rightHSlideServo,  leftHSlideServo, rightVSlideDrive,  leftVSlideDrive );
 
         telemetry.addData("Status", "Initialized");
         telemetry.update();
