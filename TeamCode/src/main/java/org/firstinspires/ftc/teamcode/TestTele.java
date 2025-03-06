@@ -20,7 +20,7 @@ right side pivot port 3 control hub
 left side pivot port 1 expansion hub
 */
 class Claw {
-    private final double STEP = 0.001;
+    private final double STEP = 0.005;
     private Servo clawRotateServo;
     private Servo leftArmServo;
     private Servo rightArmServo;
@@ -34,6 +34,7 @@ class Claw {
         this.telemetry = telemetry;
         leftArmServo.setDirection(Servo.Direction.REVERSE);
         rightArmServo.setDirection(Servo.Direction.FORWARD);
+        //grabberServo.setDirection(Servo.Direction.REVERSE);
     }
     public void reset() {
         leftArmServo.setPosition(0);
@@ -50,6 +51,8 @@ class Claw {
     public void rotateArm(double amt) {
         rightArmServo.setPosition(rightArmServo.getPosition()+amt);
         leftArmServo.setPosition(leftArmServo.getPosition()+amt);
+        telemetry.addData("Arm Pos:", rightArmServo.getPosition());
+
     }
     public void spinClaw(double amt) {
         clawRotateServo.setPosition(clawRotateServo.getPosition()+amt);
@@ -110,10 +113,10 @@ class HSlides {
         }
         pos = clamp(pos, 0, 1);
 
-        double mappedLeft = mapToRange(pos, left_min, left_max);
-        double mappedRight = mapToRange(pos, right_min, right_max);
-        left.setPosition(mappedLeft);
-        right.setPosition(mappedRight);
+        //double mappedLeft = mapToRange(pos, left_min, left_max);
+        //double mappedRight = mapToRange(pos, right_min, right_max);
+        left.setPosition(pos);
+        right.setPosition(pos);
 
 
         //if(gamepad.a) extend();
@@ -220,8 +223,8 @@ class Drive {
     }
 }
 // EXPANSION HUB PORT ZERO
-@TeleOp(name = "TestTele2", group = "Linear OpMode")
-public class TestTele2 extends RobotLinearOpMode {
+@TeleOp(name = "TestTele", group = "Linear OpMode")
+public class TestTele extends RobotLinearOpMode {
     private void printGamepad() {
         // Left Stick
         telemetry.addData("Left Stick X", gamepad1.left_stick_x);
@@ -315,17 +318,20 @@ public class TestTele2 extends RobotLinearOpMode {
         telemetry.update();
         waitForStart();
         runtime.reset();
+        //clawRotateServo.setPosition(0.0);
 
-        clawRotateServo.setPosition(1);
+
+        //clawRotateServo.setPosition(1);
         while (opModeIsActive()) {
+
             if(gamepad1.left_bumper) {
                 break;
             }
             printGamepad();
-            drive.go(gamepad1);
-            claw.handle(gamepad1);
-            //hslides.handle(gamepad1);
-            //hslides.print(telemetry, gamepad1);
+            //drive.go(gamepad1);
+            //claw.handle(gamepad1);
+            hslides.handle(gamepad1);
+            hslides.print(telemetry, gamepad1);
             //vslides.handle(gamepad1);
             //vslides.print(telemetry, gamepad1);
 
